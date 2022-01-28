@@ -91,25 +91,32 @@ exports.editComment = async (req, res) => {
   }
 };
 
-exports.deleteComment = async (req, res) => {
+exports.deleteComment = (req, res) => {
   const { id } = req.params;
   const { token } = req.body;
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
-    commentDatabase.findByIdAndDelete({ _id: id }, (error, result) => {
+    commentDatabase.findById({ _id: id }).then(async (result) => {
+      console.log(result);
       if (result.owner.toString() !== decode._id) {
         return res.status(403).json({
           status: "ERROR",
           message: "You're not authorized to delete blog!",
         });
       }
-      const blogInfo = blogDataBase.findById({ _id: result.blogId });
+      const blogInfo = await blogDataBase.findById({ _id: result.blogId });
       const newBlogCommentsArray = blogInfo.comments.filter(
         (commentId) => commentId.toString() !== id
       );
       blogInfo.comments = newBlogCommentsArray;
       blogInfo.save();
     });
+    commentDatabase.findByIdAndDelete({ _id: id }).then(() =>
+      res.status(200).json({
+        status: "SUCCESS",
+        message: "Comment has been deleted successfully!",
+      })
+    );
   } catch (err) {
     return res.status(400).json({ status: "ERROR", message: "Invalid token!" });
   }

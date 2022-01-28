@@ -7,17 +7,17 @@ const Comments = (props) => {
   const deleteComment = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `http://localhost/:5000/comment/${event.target.value}`,
+      `http://localhost:5000/comment/${event.target.value}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: userInfo.token }),
       }
     );
-    if (response.status === "SUCCESS") {
-      props.deleteComment();
+    if (response.status === "ERROR") {
+      return <Prompt message={"Something went wrong!"} />;
     }
-    return <Prompt message={"Something went wrong!"} />;
+    props.onDeletingComment();
   };
   const comments = props.comments.map((comment) => (
     <div key={comment._id}>

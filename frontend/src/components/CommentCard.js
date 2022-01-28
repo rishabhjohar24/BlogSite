@@ -8,7 +8,7 @@ const CommentCard = (props) => {
     <div style={{ border: "solid 1px red", width: "30rem" }}>
       <Comments
         comments={props.commentsPayload}
-        deleteComment={props.deleteCommentHandler}
+        onDeletingComment={props.deleteCommentHandler}
       />
       {isLoggedIn && (
         <NewComment

@@ -20,13 +20,16 @@ const HighlightedBlog = (props) => {
       });
   };
 
-  const deleteBlogHandler = (event) => {
+  const deleteBlogHandler = async (event) => {
     event.preventDefault();
-    const response = fetch(`http://localhost:5000/blog/delete/${params.id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: userInfo.token }),
-    }).then((response) => response.json());
+    const response = await fetch(
+      `http://localhost:5000/blog/delete/${params.id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: userInfo.token }),
+      }
+    ).then((response) => response.json());
     if (response.status === "SUCCESS") {
       return history.push("/xyz/blog");
     }
