@@ -24,7 +24,9 @@ const Comments = (props) => {
       <p>{comment.name}</p>
       <p>{comment.comment}</p>
       {userInfo._id === comment.owner && (
-        <Link to={`/xyz/edit/blog/comment/${comment._id}`}> Edit Comment</Link>
+        <Link type="btn" to={`/xyz/edit/blog/comment/${comment._id}`}>
+          Edit Comment
+        </Link>
       )}
       {userInfo._id === comment.owner && (
         <button value={comment._id} onClick={deleteComment}>

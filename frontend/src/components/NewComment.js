@@ -7,6 +7,7 @@ const NewComment = (props) => {
   const commentInputRef = useRef();
   const postComment = async (event) => {
     event.preventDefault();
+    props.hideCommentInput();
     const enteredComment = commentInputRef.current.value;
     const response = await fetch(`http://localhost:5000/comment`, {
       method: "POST",
